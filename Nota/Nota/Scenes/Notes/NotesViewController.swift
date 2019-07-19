@@ -22,12 +22,15 @@ class NotesViewController: UIViewController {
     var notes:[Note] = []
     var currentUserId:String!
     var databaseRef:DatabaseReference!
+    var mappedNotesIds:[String:String] = [:]
+    var selectedRow:IndexPath!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         databaseRef = Database.database().reference()
         self.configViews()
         self.observeNotesChanges()
+        self.observeNotesModifications()
         self.setupNavigationBar()
         self.currentUserId = Auth.auth().currentUser?.uid
     }
@@ -56,34 +59,65 @@ class NotesViewController: UIViewController {
             self.activityIndicator.startAnimating()
         }
         databaseRef.child("Notes").queryOrdered(byChild: "ownerId").queryEqual(toValue: "1").observe(.value) { (snapshot) in
+            self.handleChangesResponse(snapshot)
+        }
+    }
+    
+    func observeNotesModifications(){
+        databaseRef.child("Notes").queryOrdered(byChild: "ownerId").queryEqual(toValue: "1").observe(.childChanged) { (snapshot) in
+            print("🔵🔵 child changed")
             if snapshot.value is NSNull{
-                print("Error observing changes 🔴")
-                self.presentAlert(title: "Cannot fetch account notes", message: nil)
-                return
-            }
-            print("changes observed 🚘")
-            let noteData = ((snapshot.value) as? [String:Any])?.values
-            print("🎭 \(noteData)")
-            do{
-                for note in noteData!{
-                    let note = try FirebaseDecoder().decode(Note.self, from: note)
-                    print("Note: \(note)")
-                        if !self.isContained(noteToCheck: note){
-                            self.notes.append(note)
-                            self.notesTableView.insertRows(at: [IndexPath(row: self.notes.count-1, section: 0)], with: .automatic)
-                            print("Number of notes: \(self.notes.count)")
-                    }
-                }
-            }
-            catch{
-                self.presentAlert(title: "Cannot Display incoming notes.", message: nil)
-                print(error)
+                self.presentAlert(title: "Error fetching notes changes", message: nil)
                 return
             }
             DispatchQueue.main.async {
-                self.numberOfNotesLabel.text = "\(self.notes.count) Notes"
-                self.activityIndicator.stopAnimating()
+                let cell = self.notesTableView.cellForRow(at: self.selectedRow) as! NoteTableViewCell
+                let noteData = try? FirebaseDecoder().decode(Note.self, from: snapshot.value!)
+                cell.configureCell(title: noteData!.content)
             }
+        }
+    }
+    
+    fileprivate func handleChangesResponse(_ snapshot: DataSnapshot) {
+        if snapshot.value is NSNull{
+            print("Error observing changes 🔴")
+            self.presentAlert(title: "Cannot fetch account notes", message: nil)
+            return
+        }
+        print("changes observed 🚘")
+        let noteDataDictionary = (snapshot.value) as? [String:Any] ?? [:]
+        var notesMap:[String:String] = [:]
+        for note in noteDataDictionary{
+            let key = note.key
+            let noteValue = try? FirebaseDecoder().decode(Note.self, from: note.value)
+            if noteValue != nil{
+                notesMap[key] = noteValue!.noteId
+                print("Map: \(notesMap)")
+            }
+        }
+        self.mappedNotesIds = notesMap
+        print(self.mappedNotesIds)
+        let noteData = ((snapshot.value) as? [String:Any])?.values
+        print("🎭 \(noteData)")
+        do{
+            for note in noteData!{
+                let note = try FirebaseDecoder().decode(Note.self, from: note)
+                print("Note: \(note)")
+                if !self.isContained(noteToCheck: note){
+                    self.notes.append(note)
+                    self.notesTableView.insertRows(at: [IndexPath(row: self.notes.count-1, section: 0)], with: .automatic)
+                    print("Number of notes: \(self.notes.count)")
+                }
+            }
+        }
+        catch{
+            self.presentAlert(title: "Cannot Display incoming notes.", message: nil)
+            print(error)
+            return
+        }
+        DispatchQueue.main.async {
+            self.numberOfNotesLabel.text = "\(self.notes.count) Notes"
+            self.activityIndicator.stopAnimating()
         }
     }
     
@@ -95,6 +129,7 @@ class NotesViewController: UIViewController {
         }
         return false
     }
+    
     
     @objc func addNote(){
         let addNoteVC = AddNoteViewController()
@@ -129,9 +164,11 @@ extension NotesViewController:UITableViewDataSource,UITableViewDelegate{
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
+        self.selectedRow = indexPath
         let addNoteVC = AddNoteViewController()
         addNoteVC.isNewNote = false
         addNoteVC.currentNote = self.notes[indexPath.row]
+        addNoteVC.mappedNotesIds = self.mappedNotesIds
         print("Selected note: \(self.notes[indexPath.row].content)")
         self.navigationController?.pushViewController(addNoteVC, animated: true)
     }

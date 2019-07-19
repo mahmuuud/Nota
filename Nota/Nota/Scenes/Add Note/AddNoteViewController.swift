@@ -19,6 +19,7 @@ class AddNoteViewController: UIViewController {
     var currentUserId:String!
     var currentNote:Note!
     var databaseRef:DatabaseReference!
+    var mappedNotesIds:[String:String] = [:]
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -52,7 +53,18 @@ class AddNoteViewController: UIViewController {
             self.databaseRef.child("Notes").childByAutoId().setValue(encodedNote)
         }
         else{
-            self.databaseRef.child("Notes").child(self.currentNote.noteId).updateChildValues(["content":self.noteTextView.text!])
+            var nodeId = ""
+            for note in mappedNotesIds{
+                if note.value == self.currentNote.noteId{
+                    nodeId = note.key
+                    print("Found note 🔴")
+                    break
+                }
+            }
+            if nodeId != ""{
+                print("Edited ====")
+                self.databaseRef.child("Notes").child(nodeId).updateChildValues(["content":self.noteTextView.text!])
+            }
         }
         self.navigationController?.popViewController(animated: true)
     }
