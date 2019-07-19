@@ -16,7 +16,7 @@ class AuthenticationViewController: UIViewController,GIDSignInUIDelegate,GIDSign
         super.viewDidLoad()
         GIDSignIn.sharedInstance().uiDelegate = self
         GIDSignIn.sharedInstance()?.delegate = self
-        GIDSignIn.sharedInstance().signIn()
+        //GIDSignIn.sharedInstance().signIn()
     }
 
     func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
@@ -28,6 +28,7 @@ class AuthenticationViewController: UIViewController,GIDSignInUIDelegate,GIDSign
         let credential = GoogleAuthProvider.credential(withIDToken: auth.idToken, accessToken: auth.accessToken)
         Auth.auth().signIn(with: credential) { (authResult, error) in
             print("signed in")
+            UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "userId")
             self.performSegue(withIdentifier: "authPerformed", sender: nil)
         }
     }

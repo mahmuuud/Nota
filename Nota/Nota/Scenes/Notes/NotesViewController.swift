@@ -9,6 +9,7 @@
 import UIKit
 import Firebase
 import CodableFirebase
+import GoogleSignIn
 
 class NotesViewController: UIViewController {
     
@@ -52,13 +53,15 @@ class NotesViewController: UIViewController {
         let addNoteBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNote))
         addNoteBarButtonItem.tintColor = .black
         self.navigationItem.rightBarButtonItem = addNoteBarButtonItem
-        let logoutNoteBarButtonItem = UIBarButtonItem(title: "LOGOUT", style: .plain, target: self, action: nil)
+        let logoutNoteBarButtonItem = UIBarButtonItem(title: "LOGOUT", style: .plain, target: self, action: #selector(logout))
         addNoteBarButtonItem.tintColor = .black
         self.navigationItem.leftBarButtonItem = logoutNoteBarButtonItem
     }
     
     @objc func logout(){
-        
+        try? Auth.auth().signOut()
+        GIDSignIn.sharedInstance()?.signOut()
+        self.dismiss(animated: true, completion: nil)
     }
     
     func observeNotesChanges(){
