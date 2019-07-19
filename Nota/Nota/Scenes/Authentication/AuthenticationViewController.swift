@@ -28,8 +28,11 @@ class AuthenticationViewController: UIViewController,GIDSignInUIDelegate,GIDSign
         let credential = GoogleAuthProvider.credential(withIDToken: auth.idToken, accessToken: auth.accessToken)
         Auth.auth().signIn(with: credential) { (authResult, error) in
             print("signed in")
-            UserDefaults.standard.set(Auth.auth().currentUser?.uid, forKey: "userId")
-            self.performSegue(withIdentifier: "authPerformed", sender: nil)
+            let navigationController = UINavigationController()
+            let notesVC = NotesViewController()
+            navigationController.setViewControllers([notesVC], animated: true)
+            navigationController.navigationBar.tintColor = .black
+            self.present(navigationController,animated: true)
         }
     }
 }

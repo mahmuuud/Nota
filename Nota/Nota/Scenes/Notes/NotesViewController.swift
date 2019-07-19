@@ -61,7 +61,8 @@ class NotesViewController: UIViewController {
     @objc func logout(){
         try? Auth.auth().signOut()
         GIDSignIn.sharedInstance()?.signOut()
-        self.dismiss(animated: true, completion: nil)
+        print("Logout")
+        self.present(AuthenticationViewController(),animated: true)
     }
     
     func observeNotesChanges(){
@@ -91,7 +92,7 @@ class NotesViewController: UIViewController {
     fileprivate func handleChangesResponse(_ snapshot: DataSnapshot) {
         if snapshot.value is NSNull{
             print("Error observing changes 🔴")
-            self.presentAlert(title: "Cannot fetch account notes", message: nil)
+            self.presentAlert(title: "Cannot fetch account notes or no notes for the current account", message: nil)
             return
         }
         print("changes observed 🚘")
