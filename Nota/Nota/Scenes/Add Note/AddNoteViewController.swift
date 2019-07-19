@@ -48,7 +48,7 @@ class AddNoteViewController: UIViewController {
     
     @objc func saveNote(){
         if self.isNewNote {
-            self.currentNote = Note(content: self.noteTextView.text ?? "", ownerId: "1", noteId: UUID().uuidString)
+            self.currentNote = Note(content: self.noteTextView.text ?? "", ownerId: Auth.auth().currentUser!.uid, noteId: UUID().uuidString)
             let encodedNote = try? FirebaseEncoder().encode(self.currentNote)
             self.databaseRef.child("Notes").childByAutoId().setValue(encodedNote)
         }

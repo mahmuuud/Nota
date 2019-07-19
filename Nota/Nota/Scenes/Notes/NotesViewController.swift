@@ -52,19 +52,26 @@ class NotesViewController: UIViewController {
         let addNoteBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addNote))
         addNoteBarButtonItem.tintColor = .black
         self.navigationItem.rightBarButtonItem = addNoteBarButtonItem
+        let logoutNoteBarButtonItem = UIBarButtonItem(title: "LOGOUT", style: .plain, target: self, action: nil)
+        addNoteBarButtonItem.tintColor = .black
+        self.navigationItem.leftBarButtonItem = logoutNoteBarButtonItem
+    }
+    
+    @objc func logout(){
+        
     }
     
     func observeNotesChanges(){
         DispatchQueue.main.async {
             self.activityIndicator.startAnimating()
         }
-        databaseRef.child("Notes").queryOrdered(byChild: "ownerId").queryEqual(toValue: "1").observe(.value) { (snapshot) in
+        databaseRef.child("Notes").queryOrdered(byChild: "ownerId").queryEqual(toValue: Auth.auth().currentUser!.uid).observe(.value) { (snapshot) in
             self.handleChangesResponse(snapshot)
         }
     }
     
     func observeNotesModifications(){
-        databaseRef.child("Notes").queryOrdered(byChild: "ownerId").queryEqual(toValue: "1").observe(.childChanged) { (snapshot) in
+        databaseRef.child("Notes").queryOrdered(byChild: "ownerId").queryEqual(toValue: Auth.auth().currentUser!.uid).observe(.childChanged) { (snapshot) in
             print("🔵🔵 child changed")
             if snapshot.value is NSNull{
                 self.presentAlert(title: "Error fetching notes changes", message: nil)

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="P38-Yo-6Dh">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="14490.70" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="2bD-G3-Y6K">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -14,7 +14,7 @@
             <objects>
                 <viewController id="2bD-G3-Y6K" customClass="AuthenticationViewController" customModule="Nota" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
-                        <segue destination="P38-Yo-6Dh" kind="presentation" id="j4X-6s-ncZ"/>
+                        <segue destination="P38-Yo-6Dh" kind="presentation" identifier="authPerformed" id="j4X-6s-ncZ"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="aSt-PD-iH2" userLabel="First Responder" sceneMemberID="firstResponder"/>

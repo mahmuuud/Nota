@@ -11,7 +11,7 @@ import Firebase
 import GoogleSignIn
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate {
 
     var window: UIWindow?
 
@@ -21,23 +21,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, GIDSignInDelegate {
         FirebaseApp.configure()
         Database.database().isPersistenceEnabled = true
         GIDSignIn.sharedInstance()?.clientID = FirebaseApp.app()?.options.clientID
-        GIDSignIn.sharedInstance()?.delegate = self
        // window?.rootViewController = AuthenticationViewController()
         return true
-    }
-    
-    
-    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
-        if error != nil{
-            print("Error signing in")
-            return
-        }
-        guard let auth = user.authentication else{return}
-        let credential = GoogleAuthProvider.credential(withIDToken: auth.idToken, accessToken: auth.accessToken)
-        Auth.auth().signIn(with: credential) { (authResult, error) in
-            print("signed in")
-            
-        }
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

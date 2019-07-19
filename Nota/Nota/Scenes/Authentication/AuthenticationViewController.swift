@@ -10,12 +10,25 @@ import UIKit
 import Firebase
 import GoogleSignIn
 
-class AuthenticationViewController: UIViewController,GIDSignInUIDelegate {
+class AuthenticationViewController: UIViewController,GIDSignInUIDelegate,GIDSignInDelegate {
 
     override func viewDidLoad() {
         super.viewDidLoad()
         GIDSignIn.sharedInstance().uiDelegate = self
+        GIDSignIn.sharedInstance()?.delegate = self
         GIDSignIn.sharedInstance().signIn()
     }
 
+    func sign(_ signIn: GIDSignIn!, didSignInFor user: GIDGoogleUser!, withError error: Error!) {
+        if error != nil{
+            print("Error signing in")
+            return
+        }
+        guard let auth = user.authentication else{return}
+        let credential = GoogleAuthProvider.credential(withIDToken: auth.idToken, accessToken: auth.accessToken)
+        Auth.auth().signIn(with: credential) { (authResult, error) in
+            print("signed in")
+            self.performSegue(withIdentifier: "authPerformed", sender: nil)
+        }
+    }
 }
