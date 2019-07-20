@@ -4,7 +4,6 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="14490.49"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -13,6 +12,7 @@
         <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="NotesViewController" customModule="Nota" customModuleProvider="target">
             <connections>
                 <outlet property="activityIndicator" destination="zK4-5t-NAe" id="aoF-Ir-0YT"/>
+                <outlet property="noNotesView" destination="z53-lu-DmS" id="UmC-kU-Nm4"/>
                 <outlet property="notesTableView" destination="B5r-Ik-4vx" id="hDT-00-R5D"/>
                 <outlet property="numberOfNotesLabel" destination="4LI-P8-5ZY" id="GDH-Wg-nsG"/>
                 <outlet property="view" destination="i5M-Pr-FkT" id="sfx-zR-JGt"/>
@@ -29,13 +29,13 @@
                     <items/>
                 </toolbar>
                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="numberOfNotes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4LI-P8-5ZY">
-                    <rect key="frame" x="142.5" y="638" width="90.5" height="14.5"/>
+                    <rect key="frame" x="142" y="637.5" width="91" height="15"/>
                     <fontDescription key="fontDescription" type="system" pointSize="12"/>
                     <nil key="textColor"/>
                     <nil key="highlightedColor"/>
                 </label>
                 <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" hidesWhenStopped="YES" animating="YES" style="gray" translatesAutoresizingMaskIntoConstraints="NO" id="zK4-5t-NAe">
-                    <rect key="frame" x="114.5" y="635" width="20" height="20"/>
+                    <rect key="frame" x="114" y="635" width="20" height="20"/>
                 </activityIndicatorView>
                 <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="B5r-Ik-4vx">
                     <rect key="frame" x="0.0" y="20" width="375" height="603"/>
@@ -45,6 +45,40 @@
                         <outlet property="delegate" destination="-1" id="hvb-S6-e2a"/>
                     </connections>
                 </tableView>
+                <view hidden="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="z53-lu-DmS">
+                    <rect key="frame" x="8" y="263.5" width="359" height="160"/>
+                    <subviews>
+                        <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="notepad" translatesAutoresizingMaskIntoConstraints="NO" id="OED-d9-LwY">
+                            <rect key="frame" x="154.5" y="12" width="50" height="50"/>
+                            <constraints>
+                                <constraint firstAttribute="width" constant="50" id="MPX-5T-8Cf"/>
+                                <constraint firstAttribute="height" constant="50" id="xHM-ds-0us"/>
+                            </constraints>
+                        </imageView>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Notes" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="IeM-wn-r4j">
+                            <rect key="frame" x="156.5" y="77" width="46" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <nil key="textColor"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="You don't have any notes right now." textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tyn-WQ-NKq">
+                            <rect key="frame" x="44.5" y="106" width="270.5" height="21"/>
+                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                            <color key="textColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <nil key="highlightedColor"/>
+                        </label>
+                    </subviews>
+                    <color key="backgroundColor" red="0.81960784313725488" green="0.84313725490196079" blue="0.85490196078431369" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                    <constraints>
+                        <constraint firstItem="OED-d9-LwY" firstAttribute="centerX" secondItem="z53-lu-DmS" secondAttribute="centerX" id="18S-gu-gQL"/>
+                        <constraint firstItem="IeM-wn-r4j" firstAttribute="centerX" secondItem="z53-lu-DmS" secondAttribute="centerX" id="YId-qF-guj"/>
+                        <constraint firstItem="IeM-wn-r4j" firstAttribute="top" secondItem="OED-d9-LwY" secondAttribute="bottom" constant="15" id="a6k-tP-vkN"/>
+                        <constraint firstItem="Tyn-WQ-NKq" firstAttribute="centerX" secondItem="z53-lu-DmS" secondAttribute="centerX" id="cPN-Q2-YZX"/>
+                        <constraint firstItem="OED-d9-LwY" firstAttribute="top" secondItem="z53-lu-DmS" secondAttribute="top" constant="12" id="gXl-4i-rza"/>
+                        <constraint firstAttribute="height" constant="160" id="ufF-Xe-lqJ"/>
+                        <constraint firstItem="Tyn-WQ-NKq" firstAttribute="top" secondItem="IeM-wn-r4j" secondAttribute="bottom" constant="8" id="xdJ-VR-gHm"/>
+                    </constraints>
+                </view>
             </subviews>
             <color key="backgroundColor" red="0.81960784310000001" green="0.84313725490000002" blue="0.85490196080000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
             <constraints>
@@ -52,10 +86,13 @@
                 <constraint firstItem="B5r-Ik-4vx" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="4rY-5I-xe2"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="B5r-Ik-4vx" secondAttribute="trailing" id="6yH-dp-hdB"/>
                 <constraint firstItem="4LI-P8-5ZY" firstAttribute="leading" secondItem="zK4-5t-NAe" secondAttribute="trailing" constant="8" id="K9A-rO-OpP"/>
+                <constraint firstItem="z53-lu-DmS" firstAttribute="centerY" secondItem="fnl-2z-Ty3" secondAttribute="centerY" id="O4u-Ms-mGE"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="bottom" secondItem="Ob4-3i-aws" secondAttribute="bottom" id="QbV-kP-zJs"/>
                 <constraint firstItem="4LI-P8-5ZY" firstAttribute="centerY" secondItem="Ob4-3i-aws" secondAttribute="centerY" id="X1I-ZC-CAM"/>
                 <constraint firstItem="fnl-2z-Ty3" firstAttribute="trailing" secondItem="Ob4-3i-aws" secondAttribute="trailing" id="YbU-3k-8aP"/>
                 <constraint firstItem="Ob4-3i-aws" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" id="ZQx-5v-6sl"/>
+                <constraint firstItem="z53-lu-DmS" firstAttribute="centerX" secondItem="fnl-2z-Ty3" secondAttribute="centerX" id="gE6-58-bU0"/>
+                <constraint firstItem="z53-lu-DmS" firstAttribute="leading" secondItem="fnl-2z-Ty3" secondAttribute="leading" constant="8" id="pyZ-e1-beS"/>
                 <constraint firstItem="Ob4-3i-aws" firstAttribute="top" secondItem="B5r-Ik-4vx" secondAttribute="bottom" id="vGA-sk-H3d"/>
                 <constraint firstItem="zK4-5t-NAe" firstAttribute="centerY" secondItem="Ob4-3i-aws" secondAttribute="centerY" id="ysH-H5-eoU"/>
                 <constraint firstItem="4LI-P8-5ZY" firstAttribute="centerX" secondItem="Ob4-3i-aws" secondAttribute="centerX" id="z0e-Lg-22K"/>
@@ -63,4 +100,7 @@
             <viewLayoutGuide key="safeArea" id="fnl-2z-Ty3"/>
         </view>
     </objects>
+    <resources>
+        <image name="notepad" width="512" height="512"/>
+    </resources>
 </document>

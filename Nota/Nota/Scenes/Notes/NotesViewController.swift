@@ -17,6 +17,7 @@ class NotesViewController: UIViewController {
     @IBOutlet weak var notesTableView: UITableView!
     @IBOutlet weak var activityIndicator: UIActivityIndicatorView!
     @IBOutlet weak var numberOfNotesLabel: UILabel!
+    @IBOutlet weak var noNotesView: UIView!
     
     let noteCellNib = UINib(nibName: "NoteTableViewCell", bundle: nil)
     let noteCellReuseId = "noteCell"
@@ -44,6 +45,7 @@ class NotesViewController: UIViewController {
     func configViews(){
         self.activityIndicator.stopAnimating()
         self.notesTableView.register(noteCellNib, forCellReuseIdentifier: noteCellReuseId)
+        self.notesTableView.backgroundView = noNotesView
     }
     
     func setupNavigationBar(){
@@ -160,6 +162,15 @@ class NotesViewController: UIViewController {
 
 extension NotesViewController:UITableViewDataSource,UITableViewDelegate{
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if self.notes.count == 0{
+            self.noNotesView.isHidden = false
+            self.notesTableView.separatorStyle = .none
+        }
+        else{
+            self.noNotesView.isHidden = true
+            self.notesTableView.separatorStyle = .singleLine
+        }
+        
         return self.notes.count
     }
     
